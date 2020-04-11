@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Paging.Controllers
@@ -19,11 +17,9 @@ namespace Paging.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get([FromQuery] ForecastParams parameters)
+        public PagedList<WeatherForecast> Get([FromQuery] ForecastParams parameters)
         {
-            return repository.All
-                .Skip(parameters.Page * parameters.Size)
-                .Take(parameters.Size);
+            return PagedList<WeatherForecast>.Create(repository.All, parameters.Page, parameters.Size);
         }
     }
 }
