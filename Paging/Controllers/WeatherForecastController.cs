@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Paging.Controllers
@@ -17,9 +19,39 @@ namespace Paging.Controllers
         }
 
         [HttpGet]
-        public PagedList<WeatherForecast> Get([FromQuery] ForecastParams parameters)
+        //idea: add attribute AddpaginationMetadata and handle metadata creation in middleware, here return PagedList<T> only
+        public ActionResult<IEnumerable<WeatherForecast>> Get([FromQuery] ForecastParams parameters)
         {
-            return PagedList<WeatherForecast>.Create(repository.All, parameters.Page, parameters.Size);
+            var result =  PagedList<WeatherForecast>.Create(repository.All, parameters.Page, parameters.Size);
+
+            var paginationMetadata = new
+            {
+                currentPage = result.CurrentPage,
+                pageSize = result.PageSize,
+                totalCount = result.TotalCount,
+                totalPages = result.TotalPages,
+                previousPageLink = result.HasPrevious ? CreateResourceUri(parameters, ResourceUriType.Previous) : null,
+                nextPageLink = result.HasNext ? CreateResourceUri(parameters, ResourceUriType.Next) : null,
+            };
+
+            Response.Headers.Add("Pagination", JsonSerializer.Serialize(paginationMetadata));
+            return Ok(result);
         }
+
+        private string CreateResourceUri(ForecastParams parameters, ResourceUriType type) => (type) switch 
+        {
+            ResourceUriType.Previous => Url.Link("WeatherForecast", new {
+                page = parameters.Page - 1,
+                size = parameters.Size
+            }),
+            ResourceUriType.Next => Url.Link("WeatherForecast", new {
+                page = parameters.Page + 1,
+                size = parameters.Size
+            }),
+            _ => Url.Link("WeatherForecast", new {
+                page = parameters.Page,
+                size = parameters.Size
+            })
+        };
     }
 }

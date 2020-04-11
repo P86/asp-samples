@@ -5,8 +5,7 @@ namespace Paging.Controllers
     public class ForecastParams
     {
         const int maxSize = 20;
-        private int size;
-
+        private int size = 10;
         public int Page { get; set; } = 1;
         public int Size
         {
