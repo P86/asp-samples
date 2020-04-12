@@ -35,6 +35,8 @@ namespace Paging.Controllers
             };
 
             Response.Headers.Add("Pagination", JsonSerializer.Serialize(paginationMetadata));
+            //exposing metadata header to client
+            Response.Headers.Add("Access-Control-Expose-Headers", "Pagination");
             return Ok(result);
         }
 
