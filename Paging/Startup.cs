@@ -21,6 +21,9 @@ namespace Paging
         {
             services.AddControllers();
             services.AddSingleton<IForecastRepository, ForecastRepository>();
+            services.AddCors(options => options.AddPolicy("any", policy => policy.AllowAnyOrigin()
+                                                                                 .AllowAnyMethod()
+                                                                                 .AllowAnyHeader()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,6 +34,8 @@ namespace Paging
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("any");
+            
             app.UseRouting();
 
             app.UseAuthorization();
