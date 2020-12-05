@@ -22,7 +22,7 @@ namespace Paging.Controllers
         //idea: add attribute AddpaginationMetadata and handle metadata creation in middleware, here return PagedList<T> only
         public ActionResult<IEnumerable<WeatherForecast>> Get([FromQuery] ForecastParams parameters)
         {
-            var result =  PagedList<WeatherForecast>.Create(repository.All, parameters.Page, parameters.Size);
+            var result = PagedList<WeatherForecast>.Create(repository.All, parameters.Page, parameters.Size);
 
             var paginationMetadata = new
             {
