@@ -41,12 +41,16 @@ namespace Authorization
 
             app.UseRouting();
 
+            app.UseMiddleware<ResourceBasedAuthenticationMiddleware>();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            
         }
     }
 }

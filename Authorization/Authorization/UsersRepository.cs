@@ -6,7 +6,7 @@ namespace Authorization
     {
         public bool HasAccess(Guid userId)
         {
-            return true;
+            return false;
         }
     }
 }

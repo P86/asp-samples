@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -26,13 +27,16 @@ namespace Authorization.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get(Guid userId)
+        [AuthorizeUser("userId")]
+        public ActionResult<IEnumerable<WeatherForecast>> Get(Guid userId)
         {
-            var isAuthorized = await _authorizationService.AuthorizeAsync(User, userId, "ResourceBasedPolicy");
-            if(!isAuthorized.Succeeded)
-            {
-                return Forbid();
-            }
+            //var isAuthorized = await _authorizationService.AuthorizeAsync(User, userId, "ResourceBasedPolicy");
+            //if(!isAuthorized.Succeeded)
+            //{
+            //    return Forbid();
+            //}
+
+            var asd = HttpContext.Features.Get<IEndpointFeature>()?.Endpoint;
 
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
