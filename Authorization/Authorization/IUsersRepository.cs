@@ -4,6 +4,6 @@ namespace Authorization
 {
     public interface IUsersRepository
     {
-        bool HasAccess(Guid userId);
+        bool HasAccess(int userId);
     }
 }

@@ -14,27 +14,34 @@ namespace Authorization
             _next = next;
             _authorizationService = authorizationService;
         }
-
+        
         public async Task Invoke(HttpContext httpContext)
         {
             var endpoint = httpContext.GetEndpoint();
-            if (endpoint != null)
+            var attribute = endpoint?.Metadata.GetMetadata<AuthorizeUserAttribute>();
+            if (attribute != null)
             {
-                var authorizeUser = endpoint.Metadata.GetMetadata<AuthorizeUserAttribute>();
-                if(authorizeUser != null)
+                if (httpContext.Request.RouteValues.TryGetValue(attribute.ParameterName, out var userId))
                 {
-                    if (httpContext.Request.Query.TryGetValue(authorizeUser.ParameterName, out var userId))
+                    var result = await _authorizationService.AuthorizeAsync(httpContext.User, int.Parse(userId.ToString()), "ResourceBasedPolicy");
+                    if (result.Succeeded)
                     {
-
+                        await _next(httpContext);
                     }
                     else
                     {
-                        return httpContext.Response.
+                        httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
                     }
                 }
+                else
+                {
+                    httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                }
             }
-            
-            await _next(httpContext);
+            else
+            {
+                await _next(httpContext);
+            }
         }
     }
 }

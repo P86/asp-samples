@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,26 +16,33 @@ namespace Authorization.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
         private readonly IAuthorizationService _authorizationService;
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(IAuthorizationService authorizationService, ILogger<WeatherForecastController> logger)
+        
+        public WeatherForecastController(IAuthorizationService authorizationService)
         {
             _authorizationService = authorizationService;
-            _logger = logger;
         }
 
         [HttpGet]
-        [AuthorizeUser("userId")]
-        public ActionResult<IEnumerable<WeatherForecast>> Get(Guid userId)
+        public async Task<ActionResult<IEnumerable<WeatherForecast>>> GetWithResourceBasedAuth([FromQuery]int userId = 506)
         {
-            //var isAuthorized = await _authorizationService.AuthorizeAsync(User, userId, "ResourceBasedPolicy");
-            //if(!isAuthorized.Succeeded)
-            //{
-            //    return Forbid();
-            //}
+            var isAuthorized = await _authorizationService.AuthorizeAsync(User, userId, "ResourceBasedPolicy");
+            if (!isAuthorized.Succeeded)
+            {
+                return Forbid();
+            }
 
-            var asd = HttpContext.Features.Get<IEndpointFeature>()?.Endpoint;
+            return GetForecasts();
+        }
 
+        [HttpGet("{userId}")]
+        [AuthorizeUser("userId")]
+        public ActionResult<IEnumerable<WeatherForecast>> GetWithAttribute(int userId)
+        {
+            return GetForecasts();
+        }
+
+        private static ActionResult<IEnumerable<WeatherForecast>> GetForecasts()
+        {
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

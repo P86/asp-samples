@@ -1,12 +1,11 @@
-﻿using System;
-
-namespace Authorization
+﻿namespace Authorization
 {
     public class UsersRepository : IUsersRepository
     {
-        public bool HasAccess(Guid userId)
+        public bool HasAccess(int userId)
         {
-            return false;
+            //user with id 506 don't have access
+            return userId != 506;
         }
     }
 }

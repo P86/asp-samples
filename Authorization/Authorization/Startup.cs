@@ -23,12 +23,11 @@ namespace Authorization
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ResourceBasedPolicy", policy =>
-                    policy.Requirements.Add(new ResourceBasedRequirement()));
+                options.AddPolicy("ResourceBasedPolicy", policy => policy.Requirements.Add(new ResourceBasedRequirement()));
             });
 
-            services.AddSingleton<IAuthorizationHandler, ResourceBasedAuthorizationHandler>();
-            services.AddSingleton<IUsersRepository, UsersRepository>();
+            services.AddTransient<IAuthorizationHandler, ResourceBasedAuthorizationHandler>();
+            services.AddTransient<IUsersRepository, UsersRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,8 +48,6 @@ namespace Authorization
             {
                 endpoints.MapControllers();
             });
-
-            
         }
     }
 }
