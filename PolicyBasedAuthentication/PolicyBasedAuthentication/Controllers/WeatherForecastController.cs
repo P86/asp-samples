@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PolicyBasedAuthentication.Authorization;
+using PolicyBasedAuthorization.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PolicyBasedAuthentication.Controllers
+namespace PolicyBasedAuthorization.Controllers
 {
     [ApiController]
     [Route("[controller]")]

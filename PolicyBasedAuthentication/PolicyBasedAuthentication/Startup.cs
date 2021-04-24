@@ -6,11 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using PolicyBasedAuthentication.Authorization;
+using PolicyBasedAuthorization.Authorization;
 using System.Security.Claims;
 using System.Text;
 
-namespace PolicyBasedAuthentication
+namespace PolicyBasedAuthorization
 {
     public class Startup
     {

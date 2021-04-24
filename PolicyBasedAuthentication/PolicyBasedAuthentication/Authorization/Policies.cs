@@ -1,4 +1,4 @@
-﻿namespace PolicyBasedAuthentication.Authorization
+﻿namespace PolicyBasedAuthorization.Authorization
 {
     public static class Policies
     {

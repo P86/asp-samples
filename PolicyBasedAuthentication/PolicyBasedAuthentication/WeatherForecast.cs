@@ -1,6 +1,6 @@
 using System;
 
-namespace PolicyBasedAuthentication
+namespace PolicyBasedAuthorization
 {
     public class WeatherForecast
     {

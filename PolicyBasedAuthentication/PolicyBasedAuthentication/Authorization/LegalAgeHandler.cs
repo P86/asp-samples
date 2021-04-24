@@ -3,7 +3,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace PolicyBasedAuthentication.Authorization
+namespace PolicyBasedAuthorization.Authorization
 {
     public class LegalAgeRequirement: IAuthorizationRequirement { }
 
