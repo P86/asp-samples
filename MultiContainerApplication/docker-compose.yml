@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  multicontainerapplication:
+    image: ${DOCKER_REGISTRY-}multicontainerapplication
+    build:
+      context: .
+      dockerfile: MultiContainerApplication/Dockerfile
+  webapi:
+    image: ${DOCKER_REGISTRY-}webapi
+    build:
+      context: .
+      dockerfile: WebApi/Dockerfile
+  db:
+    image: redis:latest
