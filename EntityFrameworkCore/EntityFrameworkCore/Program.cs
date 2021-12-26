@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<PeopleDbContext>(options => options.UseInMemoryDatabase("People"));
+builder.Services.AddDbContext<PeopleDbContext>(options => options.UseSqlServer("Data Source=127.0.0.1,1433;User ID=sa;Password=zaq12wsx!;Database=People;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
 
 var app = builder.Build();
 
@@ -31,7 +31,14 @@ app.Run();
 /*
  * Todo:
  * + dodanie in memory db pozwalaj¹ce na zapis do bazy
- * - dodanie obs³ugi sql server
+ * + dodanie obs³ugi sql server
  * - dodanie obs³ugi sql server z u¿yciem docker-compose
- * - dodanie wsparcia dla postrgres
+ * - zapoznanie siê z dzia³aniem migracji
+ * - dodanie bardziej skomplikowanej struktury danych 
+ * - sprawdzenie jak dzia³a skomplikowane query
+ * - dodanie wsparcia dla postgres
  */
+
+
+//run sql server in container docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=zaq12wsx!" -p 1433:1433 mcr.microsoft.com/mssql/server:2019-CU14-ubuntu-20.04
+//sql server connection string Data Source=127.0.0.1,1433;User ID=sa;Password=zaq12wsx!;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
