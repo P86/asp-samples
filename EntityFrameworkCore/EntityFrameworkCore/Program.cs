@@ -1,4 +1,5 @@
 using EntityFrameworkCore.Data;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,10 +33,10 @@ app.Run();
  * Todo:
  * + dodanie in memory db pozwalaj¹ce na zapis do bazy
  * + dodanie obs³ugi sql server
- * - dodanie obs³ugi sql server z u¿yciem docker-compose
- * - zapoznanie siê z dzia³aniem migracji
  * - dodanie bardziej skomplikowanej struktury danych 
  * - sprawdzenie jak dzia³a skomplikowane query
+ * - dodanie obs³ugi sql server z u¿yciem docker-compose
+ * - zapoznanie siê z dzia³aniem migracji
  * - dodanie wsparcia dla postgres
  */
 
