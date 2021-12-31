@@ -27,11 +27,32 @@ namespace EntityFrameworkCore.Controllers
             return departments?.Select(d => d.AsDto()) ?? Enumerable.Empty<DepartmentDto>();
         }
 
-        //[HttpPost]
-        //public IEnumerable<IEnumerable<DepartmentDto>> Generate()
-        //{
-        //    var department = new Department();
-        //}
+        [HttpPost]
+        public IEnumerable<DepartmentDto> Generate()
+        {
+            var department = new Department { 
+                Name = "Other",
+                People = new List<Person> { new Person { FirstName = "Darlene", LastName = "Alderson" }, new Person { FirstName = "Mr.", LastName = "Robot" } }
+            };
+
+            dbContext.Add(department);
+            dbContext.SaveChanges();
+
+            return new [] { department.AsDto() };
+        }
+
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            var department = dbContext.Departments?.FirstOrDefault(d => d.Id == id);
+            if (department == null)
+                return NotFound();
+
+            dbContext?.Remove(department);
+            dbContext?.SaveChanges();
+
+            return Ok();
+        }
     }
 
 }
