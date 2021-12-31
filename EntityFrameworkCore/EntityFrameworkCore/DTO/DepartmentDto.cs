@@ -2,18 +2,10 @@
 
 namespace EntityFrameworkCore.DTO
 {
-    public class DepartmentDto
-    {
-        public IEnumerable<PersonDto> People { get; private set; } = Enumerable.Empty<PersonDto>();
-        public string Name { get; private set; } = string.Empty;
+    public record DepartmentDto(string Name, IEnumerable<PersonDto> People) { }
 
-        public static DepartmentDto From(Department department)
-        {
-            return new DepartmentDto
-            {
-                Name = department.Name,
-                People = department.People?.Select(p => PersonDto.From(p))?.ToList() ?? new List<PersonDto>(),
-            };
-        }
+    public static class DepartmentExtensions
+    {
+        public static DepartmentDto AsDto(this Department department) => new(department.Name, department.People?.Select(p => p.AsDto())?.ToList() ?? new List<PersonDto>());
     }
 }

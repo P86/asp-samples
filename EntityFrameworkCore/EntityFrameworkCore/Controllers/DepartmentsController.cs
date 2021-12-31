@@ -1,4 +1,5 @@
 ﻿using EntityFrameworkCore.Data;
+using EntityFrameworkCore.Data.Entities;
 using EntityFrameworkCore.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,12 +21,17 @@ namespace EntityFrameworkCore.Controllers
         public IEnumerable<DepartmentDto> Get(bool details = false)
         {
             var departments = details 
-                ? dbContext.Departments.Include(d => d.People).ToList()
-                : dbContext.Departments.ToList();
+                ? dbContext.Departments?.Include(d => d.People)?.ToList()
+                : dbContext.Departments?.ToList();
             
-            return departments.Select(d => DepartmentDto.From(d));
+            return departments?.Select(d => d.AsDto()) ?? Enumerable.Empty<DepartmentDto>();
         }
 
-
+        //[HttpPost]
+        //public IEnumerable<IEnumerable<DepartmentDto>> Generate()
+        //{
+        //    var department = new Department();
+        //}
     }
+
 }

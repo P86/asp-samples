@@ -2,18 +2,10 @@
 
 namespace EntityFrameworkCore.DTO
 {
-    public class PersonDto
-    {
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
+    public record PersonDto(string FirstName, string LastName);
 
-        public static PersonDto From(Person person)
-        {
-            return new PersonDto
-            {
-                FirstName = person.FirstName,
-                LastName = person.LastName
-            };
-        }
+    public static class PersonExtensions
+    {
+        public static PersonDto AsDto(this Person person) => new(person.FirstName, person.LastName);
     }
 }
