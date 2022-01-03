@@ -20,9 +20,9 @@ namespace EntityFrameworkCore.Controllers
         [HttpGet]
         public IEnumerable<DepartmentDto> Get(bool details = false)
         {
-            var departments = details 
-                ? dbContext.Departments?.Include(d => d.People)?.ToList()
-                : dbContext.Departments?.ToList();
+            var departments = details
+                ? dbContext.Departments?.Include(d => d.People)?.AsNoTracking().ToList()
+                : dbContext.Departments?.AsNoTracking().ToList();
             
             return departments?.Select(d => d.AsDto()) ?? Enumerable.Empty<DepartmentDto>();
         }
