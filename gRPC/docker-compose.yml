@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  grpcservice:
+    image: ${DOCKER_REGISTRY-}grpcservice
+    build:
+      context: .
+      dockerfile: GrpcService/Dockerfile
+    ports:
+        - "443:443"
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    depends_on: 
+     - "grpcservice"
