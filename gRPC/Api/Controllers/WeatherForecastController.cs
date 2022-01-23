@@ -15,17 +15,11 @@ namespace Api.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public async Task<IEnumerable<WeatherForecast>> Get()
+        public async Task<IEnumerable<WeatherForecastDto>> Get(int days)
         {
-            var response = await client.GetForecastsAsync(new ForecastsRequest { Days = 2 });
+            var response = await client.GetForecastsAsync(new ForecastsRequest { Days = days });
 
-            return new[] {
-                new WeatherForecast {
-                    Date = response.Date.ToDateTime(),
-                    TemperatureC = response.TemperatureC,
-                    Summary = response.Summary,
-                }
-            };
+            return response.WeatherForecasts.Select(forecast => WeatherForecastDto.FromWeatherForecast(forecast));
         }
     }
 }

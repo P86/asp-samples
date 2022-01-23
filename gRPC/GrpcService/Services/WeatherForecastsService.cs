@@ -12,22 +12,18 @@ namespace GrpcService.Services
 
         public override Task<WeatherForecastResponse> GetForecasts(ForecastsRequest request, ServerCallContext context)
         {
-            //return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            //{
-            //    Date = DateTime.Now.AddDays(index),
-            //    TemperatureC = Random.Shared.Next(-20, 55),
-            //    Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            //})
-            //.ToArray();
-
-            var result = new WeatherForecastResponse()
+            var forecasats = Enumerable.Range(1, request.Days).Select(index => new WeatherForecast
             {
-                Date = Timestamp.FromDateTime(DateTime.UtcNow),
+                Date = Timestamp.FromDateTime(DateTime.UtcNow.AddDays(index)),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)],
-            };
+            });
 
-            return Task.FromResult(result);
+            var respose = new WeatherForecastResponse();
+            respose.WeatherForecasts.AddRange(forecasats);
+
+            return Task.FromResult(respose);
         }
     }
 }
+
