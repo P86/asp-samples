@@ -7,32 +7,25 @@ namespace Api.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private readonly WheaterForecasts.WheaterForecastsClient client;
 
-        private readonly Greeter.GreeterClient client;
-        private readonly ILogger<WeatherForecastController> logger;
-
-        public WeatherForecastController(Greeter.GreeterClient client, ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(WheaterForecasts.WheaterForecastsClient client)
         {
             this.client = client;
-            this.logger = logger;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
         public async Task<IEnumerable<WeatherForecast>> Get()
         {
-            var response = await client.SayHelloAsync(new HelloRequest { Name = nameof(WeatherForecast) });
+            var response = await client.GetForecastsAsync(new ForecastsRequest { Days = 2 });
 
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return new[] {
+                new WeatherForecast {
+                    Date = response.Date.ToDateTime(),
+                    TemperatureC = response.TemperatureC,
+                    Summary = response.Summary,
+                }
+            };
         }
     }
 }

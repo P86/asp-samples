@@ -10,7 +10,7 @@ using GrpcClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddGrpcClient<Greeter.GreeterClient>(o => o.Address = new Uri("https://localhost:7162"));
+builder.Services.AddGrpcClient<WheaterForecasts.WheaterForecastsClient>(o => o.Address = new Uri("https://localhost:7162"));
 
 // Add services to the container.
 builder.Services.AddControllers();
