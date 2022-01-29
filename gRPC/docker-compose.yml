@@ -8,6 +8,9 @@ services:
       dockerfile: Api/Dockerfile
     depends_on:
         - grpcservice
+    ports:
+        - "6000:80"
+        - "6001:443"
 
   grpcservice:
     image: ${DOCKER_REGISTRY-}grpcservice
