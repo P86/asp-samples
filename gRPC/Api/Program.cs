@@ -9,9 +9,12 @@
 using GrpcClient;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 //gRPC can also use standard JWT Berer Token authentication and Authorization mechanism - https://docs.microsoft.com/en-us/aspnet/core/grpc/authn-and-authz?view=aspnetcore-6.0
-builder.Services.AddGrpcClient<WheaterForecasts.WheaterForecastsClient>(o => o.Address = new Uri("https://localhost:7162"));
+
+var grpcServiceUrl = configuration.GetRequiredSection("GrpcServiceUrl").Value;
+builder.Services.AddGrpcClient<WheaterForecasts.WheaterForecastsClient>(o => o.Address = new Uri(grpcServiceUrl));
 
 // Add services to the container.
 builder.Services.AddControllers();
