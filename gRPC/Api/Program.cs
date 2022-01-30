@@ -1,11 +1,3 @@
-/* todo:
- * + create proto for weather forecasts 
- * + move weather forecassts to GrpcService
- * + add authentication for grpc calls
- * + run this in containers using docker compose
- * - add logging interceptor for grpc calls
- */
-
 using GrpcClient;
 
 var builder = WebApplication.CreateBuilder(args);
